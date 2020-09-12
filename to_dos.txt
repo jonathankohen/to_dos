@@ -1,0 +1,85 @@
+input that adds to state, change it
+    - both input and state will need state, and need to be able to change it
+state
+    - list (put props on Input)
+
+App
+    - Input props list and setList
+    - Task props task and setList
+
+Input
+    - create an object called task with name:string and isComplete:bool
+    - onChange(), task.name is value of input
+    - onClick(), update setList, clear values
+
+Task
+    - delete button: needs to delete the obj from the array, or make a permanent change to the task in the obj. either way, must go into array, grab a piece, change it, then put it back together
+    - need to find a way to isolate the task to be deleted. index!
+    - pass index w/map in app
+    - setList() with filter. filter removes one, returns array
+
+
+
+
+Separate your UI into components, where each component matches one piece of your data model.
+Ex/
+    FilterableProductTable (orange): contains the entirety of the example (App.js)
+ =>   SearchBar (blue): receives all user input (Form.jsx)
+ !   ProductTable (green): displays and filters the data collection based on user input (Display.jsx)
+    ProductRow (red): displays a row for each product (Item.jsx)
+
+App.js  
+    Form.jsx
+    Display.jsx
+        Item.jsx
+
+To build a static version of your app that renders your data model, you’ll want to build components that reuse other components and pass data using props. props are a way of passing data from parent to child. If you’re familiar with the concept of state, don’t use state at all to build this static version. State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.
+State is for interactivity only!
+
+For example, if you’re building a TODO list, keep an array of the TODO items around; don’t keep a separate state variable for the count. Instead, when you want to render the TODO count, take the length of the TODO items array.
+
+Let’s go through each piece of data and figure out which one is state. Ask three questions about each piece of data:
+    Is it passed in from a parent via props? If so, it probably isn’t state.
+    Does it remain unchanged over time? If so, it probably isn’t state.
+    Can you compute it based on any other state or props in your component? If so, it isn’t state.
+
+Pieces of data: 
+    The original list of tasks (state, app)
+    The search text the user has entered (state)
+    The value of the checkbox (state)
+    The filtered list of products (filtered list of tasks isn’t state because it can be computed by combining the original list of tasks with the search text and value of the checkbox.)
+
+
+Next, we need to identify which component mutates, or owns, this state.
+! tl;dr: If a Component needs to alter one of its attributes at some point in time, that attribute should be part of its state, otherwise it should just be a prop for that Component.
+
+Remember: React is all about one-way data flow down the component hierarchy. It may not be immediately clear which component should own what state. This is often the most challenging part for newcomers to understand, so follow these steps to figure it out:
+
+For each piece of state in your application:
+
+Identify every component that renders something based on that state.
+Find a common owner component (a single component above all the components that need the state in the hierarchy).
+Either the common owner or another component higher up in the hierarchy should own the state.
+If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component.
+
+
+Display.jsx needs to filter the product list based on state and Form.jsx needs to display the search text and checked state.
+The common owner component is App.js.
+
+
+App.js: 
+    STATE = array(text, completed)
+    iterates Item in return statement
+
+
+Item.jsx
+    checkbox (completed tasks get a strikethrough)
+    delete button (for removing tasks, use filter. returns new array)
+    needs: state. pass down with props 
+
+
+Form.jsx
+
+
+userInput form and display form?
+when calling setState, make sure to send in a new obj or array
